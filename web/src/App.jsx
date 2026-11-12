@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { printInvoice } from "./invoice";
+import { API_BASE } from "./apiUrl";
 
-const API_BASE = "/api/v1";
 const LanguageContext = createContext(null);
 const HINDI = {
   "Dashboard": "डैशबोर्ड", "Orders": "ऑर्डर", "Products": "उत्पाद", "Customers": "ग्राहक", "Workspace": "कार्य क्षेत्र", "Sign out": "साइन आउट", "Your business": "आपका व्यवसाय", "Business owner": "व्यवसाय के मालिक", "Switch color theme": "रंग थीम बदलें", "Hindi": "हिंदी", "English": "English",
@@ -59,7 +59,7 @@ export default function App() {
         headers: { Accept: "application/json", ...(options.body ? { "Content-Type": "application/json" } : {}), ...(token ? { Authorization: `Bearer ${token}` } : {}), ...options.headers },
       });
     } catch {
-      throw new Error("Could not reach LocalFlow. Make sure the backend is running at localhost:8080.");
+      throw new Error("Could not reach LocalFlow. Check your connection and try again.");
     }
     if (response.status === 401 && token) { signOut(); throw new Error("Your session expired. Please sign in again."); }
     if (!response.ok) { const result = await response.json().catch(() => null); throw new Error(result?.message || `Request failed (HTTP ${response.status}).`); }

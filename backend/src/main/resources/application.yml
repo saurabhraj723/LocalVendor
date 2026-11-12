@@ -40,6 +40,8 @@ management:
         include: health,info
 
 localflow:
+  cors:
+    allowed-origins: ${LOCALFLOW_CORS_ALLOWED_ORIGINS:http://localhost:4173,http://127.0.0.1:4173}
   security:
     jwt:
       secret: ${LOCALFLOW_JWT_SECRET:localflow-dev-secret-change-me-local-only-32chars}

@@ -4,6 +4,8 @@ LocalFlow is a local-business order management platform. It currently includes
 a Spring Boot API, a React vendor workspace and customer storefront, and a
 native AppKit macOS vendor app. For a detailed implementation snapshot and
 remaining V1 work, see [Development status](docs/DEVELOPMENT_STATUS.md).
+For the limited two-business free pilot setup, see
+[Free pilot deployment](docs/FREE_PILOT_DEPLOYMENT.md).
 
 ## V1 Build Order
 

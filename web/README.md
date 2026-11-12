@@ -20,9 +20,12 @@ Prerequisites: Node.js 22 LTS and pnpm.
 
 4. Open <http://localhost:4173>.
 
-The web app calls the backend at `http://localhost:8080`. Its access token is
-kept in the browser tab's session storage. Create a production bundle with
-`pnpm build`; the output is written to `dist/`.
+During local development, Vite proxies `/api` requests to the backend at
+`http://localhost:8080`. Its access token is kept in the browser tab's session
+storage. For a hosted build, set `VITE_API_BASE_URL` to the deployed backend
+URL ending in `/api/v1`. See
+[`docs/FREE_PILOT_DEPLOYMENT.md`](../docs/FREE_PILOT_DEPLOYMENT.md). Create a
+production bundle with `pnpm build`; the output is written to `dist/`.
 
 ## Customer Storefront
 

@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import shopArt from "../assets/LocalFlowRetailerArt.png";
+import { apiUrl } from "./apiUrl";
 import "./storefront.css";
 
-const API = "/api/v1/storefront";
 const HINDI = {
   "Opening store…": "स्टोर खोला जा रहा है…", "Store unavailable": "स्टोर उपलब्ध नहीं है", "This store could not be found.": "यह स्टोर नहीं मिला।", "Product categories": "उत्पाद श्रेणियां", "Your cart": "आपका कार्ट",
   "Local pickup and delivery orders": "स्थानीय पिकअप और डिलीवरी के ऑर्डर", "My orders": "मेरे ऑर्डर", "Sign out": "साइन आउट", "Sign in": "साइन इन", "Create account": "खाता बनाएं", "Cart": "कार्ट",
@@ -49,7 +49,7 @@ export default function Storefront({ businessId }) {
 
   useEffect(() => {
     let active = true;
-    fetch(`${API}/${encodeURIComponent(businessId)}`, { headers: { Accept: "application/json" } })
+    fetch(apiUrl(`/storefront/${encodeURIComponent(businessId)}`), { headers: { Accept: "application/json" } })
       .then(async response => {
         const payload = await response.json().catch(() => null);
         if (!response.ok) throw new Error(payload?.message || "This store could not be loaded.");
@@ -122,7 +122,7 @@ export default function Storefront({ businessId }) {
     }
     if (authMode === "forgot") {
       try {
-        const response = await fetch("/api/v1/customer-auth/forgot-password", { method: "POST", headers: { Accept: "application/json", "Content-Type": "application/json" }, body: JSON.stringify({ storefrontSlug: businessId, email: String(form.get("email")).trim() }) });
+        const response = await fetch(apiUrl("/customer-auth/forgot-password"), { method: "POST", headers: { Accept: "application/json", "Content-Type": "application/json" }, body: JSON.stringify({ storefrontSlug: businessId, email: String(form.get("email")).trim() }) });
         const result = await response.json().catch(() => null);
         if (!response.ok) throw new Error(result?.message || t("Could not send reset instructions."));
         setAuthNotice(result); setAuthError("");
@@ -135,7 +135,7 @@ export default function Storefront({ businessId }) {
         setAuthError(t("Passwords do not match.")); setAuthBusy(false); return;
       }
       try {
-        const response = await fetch("/api/v1/customer-auth/reset-password", { method: "POST", headers: { Accept: "application/json", "Content-Type": "application/json" }, body: JSON.stringify({ token: resetToken, password: form.get("password") }) });
+        const response = await fetch(apiUrl("/customer-auth/reset-password"), { method: "POST", headers: { Accept: "application/json", "Content-Type": "application/json" }, body: JSON.stringify({ token: resetToken, password: form.get("password") }) });
         if (!response.ok) { const result = await response.json().catch(() => null); throw new Error(result?.message || t("Could not reset password.")); }
         const url = new URL(window.location.href); url.searchParams.delete("resetToken"); window.history.replaceState({}, "", url);
         localStorage.removeItem(`localflow.customer-session.${businessId}`); setCustomerSession(null);
@@ -153,7 +153,7 @@ export default function Storefront({ businessId }) {
       ? { storefrontSlug: businessId, registrationCode: form.get("registrationCode").trim(), name: form.get("name").trim(), phone: form.get("phone").trim(), email: form.get("email").trim(), password: form.get("password") }
       : { storefrontSlug: businessId, email: form.get("email").trim(), password: form.get("password") };
     try {
-      const response = await fetch(`/api/v1/customer-auth/${registering ? "register" : "login"}`, {
+      const response = await fetch(apiUrl(`/customer-auth/${registering ? "register" : "login"}`), {
         method: "POST", headers: { Accept: "application/json", "Content-Type": "application/json" }, body: JSON.stringify(payload),
       });
       const result = await response.json().catch(() => null);
@@ -175,7 +175,7 @@ export default function Storefront({ businessId }) {
     setOrdersOpen(true);
     setCustomerOrders(null);
     try {
-      const response = await fetch("/api/v1/customer-portal/orders?page=0&size=100", {
+      const response = await fetch(apiUrl("/customer-portal/orders?page=0&size=100"), {
         headers: { Accept: "application/json", Authorization: `Bearer ${customerSession.accessToken}` },
       });
       const result = await response.json().catch(() => null);
@@ -213,7 +213,7 @@ export default function Storefront({ businessId }) {
       items: cartLines.map(item => ({ productId: item.id, quantity: item.quantity })),
     };
     try {
-      const response = await fetch(`${API}/${encodeURIComponent(businessId)}/orders`, {
+      const response = await fetch(apiUrl(`/storefront/${encodeURIComponent(businessId)}/orders`), {
         method: "POST",
         headers: { Accept: "application/json", "Content-Type": "application/json", Authorization: `Bearer ${customerSession.accessToken}` },
         body: JSON.stringify(payload),

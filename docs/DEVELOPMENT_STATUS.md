@@ -137,7 +137,8 @@ The planned order channels converge on the same vendor order queue:
 
 See [README.md](../README.md), [web/README.md](../web/README.md),
 [PASSWORD_RESET.md](PASSWORD_RESET.md), and
-[WHATSAPP_ORDER_INTAKE.md](WHATSAPP_ORDER_INTAKE.md) for setup and focused
+[WHATSAPP_ORDER_INTAKE.md](WHATSAPP_ORDER_INTAKE.md), and
+[FREE_PILOT_DEPLOYMENT.md](FREE_PILOT_DEPLOYMENT.md) for setup and focused
 workflows.
 
 ## Verified during this documentation update
