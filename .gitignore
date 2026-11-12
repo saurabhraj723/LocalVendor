@@ -1,0 +1,24 @@
+.DS_Store
+
+# Java / Spring
+target/
+build/
+.build/
+.swiftpm/
+.gradle/
+*.class
+web/node_modules/
+web/dist/
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log

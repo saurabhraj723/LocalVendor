@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: localflow-postgres
+    environment:
+      POSTGRES_DB: localflow
+      POSTGRES_USER: localflow
+      POSTGRES_PASSWORD: localflow_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - localflow_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U localflow -d localflow"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  localflow_postgres_data:
+
